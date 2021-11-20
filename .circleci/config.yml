@@ -1,0 +1,17 @@
+version: 2.1
+jobs:
+  build:
+    machine:
+      image: ubuntu-2004:202010-01
+    resource_class: large
+    parallelism: 5
+    steps:
+      - checkout
+      - run:
+          command: |
+            echo $(circleci tests glob "foo/**/*" "bar/**/*")
+            circleci tests glob "**/*.go" | circleci tests split --split-by=timings
+workflows:
+  build-workflow:
+    jobs:
+      - build
